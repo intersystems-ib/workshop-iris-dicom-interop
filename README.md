@@ -46,3 +46,8 @@ Send query message
 ```objectscript
 do ##class(DICOM.BS.QueryService).TestFind()
 ```
+
+Send move request
+```objectscript
+do ##class(DICOM.BS.MoveService).TestMove()
+```
