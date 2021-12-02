@@ -17,8 +17,6 @@ RUN \
   zn "USER" \
   # load & compile source code
   do $SYSTEM.OBJ.LoadDir("/tmp/src", "ck", , 1) \
-  # load DICOM config
-  do ##class(EnsLib.DICOM.Util.AssociationContext).ImportXML("/tmp/install/dcm-association.xml") \
   # start production
   set production = "DICOM.Production" \
   set ^Ens.Configuration("csp","LastProduction") = production \

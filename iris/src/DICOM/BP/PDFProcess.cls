@@ -32,7 +32,7 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
         $$$ThrowOnError(tSC)
 		
         // build request containing metadata & embedded report
-        set report = ##class(DICOM.Messages.SaveReport).%New()
+        set report = ##class(DICOM.Msg.SaveReport).%New()
 		set report.File = file
 		set report.PatientName = pInput.GetValueAt("DataSet.PatientName")
 		set report.PatientNo = pInput.GetValueAt("DataSet.PatientID")
