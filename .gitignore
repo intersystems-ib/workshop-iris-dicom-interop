@@ -2,4 +2,4 @@
 obj
 bin
 *.bak
-shared/object.dcm
+shared/DICOMDIR

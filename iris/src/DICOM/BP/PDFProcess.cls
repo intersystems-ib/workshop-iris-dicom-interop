@@ -1,4 +1,4 @@
-Class DICOM.BP.StorageLocal Extends EnsLib.DICOM.Process
+Class DICOM.BP.PDFProcess Extends EnsLib.DICOM.Process
 {
 
 /// Messages received here are instances of EnsLib.DICOM.Document sent to this
@@ -32,7 +32,7 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
         $$$ThrowOnError(tSC)
 		
         // build request containing metadata & embedded report
-        set report = ##class(DICOM.Messages.SaveReport).%New()
+        set report = ##class(DICOM.Msg.SaveReport).%New()
 		set report.File = file
 		set report.PatientName = pInput.GetValueAt("DataSet.PatientName")
 		set report.PatientNo = pInput.GetValueAt("DataSet.PatientID")
@@ -40,7 +40,7 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
 		set report.StudyTime = pInput.GetValueAt("DataSet.StudyTime")
 		
         // send request to save report to a Business Operation
-        Set tSC = ..SendRequestAsync("Save Report", report)
+        Set tSC = ..SendRequestAsync("PDF Save Report", report)
 		$$$ThrowOnError(tSC)
 		
 		#; We need to send a reply to the service in all cases, so create an appropriate response

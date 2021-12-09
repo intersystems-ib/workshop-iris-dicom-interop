@@ -1,4 +1,4 @@
-Class DICOM.Messages.SaveReport Extends Ens.Request
+Class DICOM.Msg.SaveReport Extends Ens.Request
 {
 
 Property File As %Stream.GlobalBinary;
