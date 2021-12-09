@@ -30,7 +30,7 @@ Send DICOM document to IRIS Business Service
 
 Have a look at the [received messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen)!.
 
-## Query / Retrieve scenario
+## Query / Retrieve scenario
 Open an interactive session with a *tools* container which contains the [dcm4che](https://github.com/dcm4che/dcm4che) DICOM simulator.
 ```
 docker exec -it tools bash
