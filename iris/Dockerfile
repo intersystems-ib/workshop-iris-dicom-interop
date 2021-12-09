@@ -7,9 +7,6 @@ RUN chmod +x /irissession.sh
 
 # copy files
 COPY --chown=$ISC_PACKAGE_MGRUSER:$ISC_PACKAGE_IRISGROUP src /tmp/src
-COPY --chown=$ISC_PACKAGE_MGRUSER:$ISC_PACKAGE_IRISGROUP install /tmp/install
-
-RUN ls -l /tmp
 
 SHELL ["/irissession.sh"]
 
