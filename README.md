@@ -13,6 +13,7 @@ docker-compose up -d
 Open [DICOM.Production](http://localhost:52773/csp/user/EnsPortal.ProductionConfig.zen?PRODUCTION=DICOM.Production&$NAMESPACE=USER). Use the default `superuser` / `SYS` account.
 
 ## Receiving DICOM with embedded PDF
+
 Open an interactive session with a *tools* container which contains the [dcm4che](https://github.com/dcm4che/dcm4che) DICOM simulator.
 ```
 docker exec -it tools bash
@@ -28,9 +29,12 @@ Send DICOM document to IRIS Business Service
 ./storescu -b DCM_PDF_SCP -c IRIS_PDF_SCU@iris:2010 /shared/pdf/embeddedpdf.dcm
 ```
 
+<img src="img/pdfembedded-usecase.png" width="500px"/>
+
 Have a look at the [received messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen)!.
 
 ## Query / Retrieve scenario
+
 Open an interactive session with a *tools* container which contains the [dcm4che](https://github.com/dcm4che/dcm4che) DICOM simulator.
 ```
 docker exec -it tools bash
@@ -62,7 +66,11 @@ Send a query message and have a look at the [QueryService messages](http://local
 do ##class(DICOM.BS.QueryService).TestFind()
 ```
 
+<img src="img/query-usecase.png" width="500px"/>
+
 Send move request, have a look at the [MoveService messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=MoveService). Notice that after the C-MOVE command, the DICOM archive will send the requested documents to the Production through the [DICOM Store In](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20Store%20In) service.
 ```objectscript
 do ##class(DICOM.BS.MoveService).TestMove()
 ```
+
+<img src="img/retrieve-usecase.png" width="500px"/>
