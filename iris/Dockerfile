@@ -1,4 +1,4 @@
-FROM store/intersystems/irishealth-community:2021.1.0.215.3
+FROM store/intersystems/irishealth-community:2021.2.0.649.0
 
 USER ${ISC_PACKAGE_MGRUSER}
 
