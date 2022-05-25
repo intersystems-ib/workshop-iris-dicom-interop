@@ -1,4 +1,4 @@
-Simple DICOM integration using IRIS for Health
+Simple DICOM integration using IRIS for Health and a simulator
 
 # Setup
 Build the images and run the containers:
