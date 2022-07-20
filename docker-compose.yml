@@ -5,6 +5,7 @@ services:
   iris:
     init: true
     container_name: iris
+    command: --check-caps false
     build:
       context: iris
     ports:
