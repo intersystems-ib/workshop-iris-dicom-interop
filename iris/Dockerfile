@@ -1,4 +1,4 @@
-FROM containers.intersystems.com/intersystems/iris-community:2023.1.0.185.0
+FROM intersystems/irishealth-community:2023.1.0.207.0
 
 USER ${ISC_PACKAGE_MGRUSER}
 
