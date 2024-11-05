@@ -1,11 +1,9 @@
-version: "2.2"
 services:
- 
+
   # iris container
   iris:
     init: true
     container_name: iris
-    command: --check-caps false
     build:
       context: iris
     ports:
