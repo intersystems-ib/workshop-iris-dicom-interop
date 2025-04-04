@@ -19,3 +19,17 @@ services:
     container_name: tools
     volumes:
       - ./shared:/shared
+
+  # sample external database to integrate from InterSystems IRIS interoperability framework  
+  mysql:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    ports:
+      - "3306:3306"

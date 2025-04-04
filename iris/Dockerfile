@@ -13,6 +13,8 @@ SHELL ["/irissession.sh"]
 
 RUN \
   zn "USER" \
+  # create credentials
+  do ##class(Ens.Config.Credentials).SetCredential("MySQL_User","testuser","testpassword") \
   # load & compile source code
   do $SYSTEM.OBJ.LoadDir("/tmp/src", "ck", , 1) \
   # start production
