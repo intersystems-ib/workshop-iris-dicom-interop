@@ -54,7 +54,7 @@ Open the DICOM production interface in your browser:
 
 **Description**: A DICOM file containing a PDF report is received by IRIS. The system extracts metadata from the DICOM header (e.g. patient name, study ID) and stores both the PDF and metadata in another system (like an EHR or document store).
 
-<img src="img/pdfembedded-usecase.png" width="500px"/>
+<img src="img/pdfembedded-usecase.png" width="900px"/>
 
 ### How to run it:
 
@@ -84,7 +84,7 @@ Open the DICOM production interface in your browser:
 
 ### Querying with C-FIND
 
-<img src="img/query-usecase.png" width="500px"/>
+<img src="img/query-usecase.png" width="900px"/>
 
 1. Open the tools container:
    ```bash
@@ -121,7 +121,7 @@ Open the DICOM production interface in your browser:
 
 ### Retrieving with C-MOVE
 
-<img src="img/retrieve-usecase.png" width="500px"/>
+<img src="img/retrieve-usecase.png" width="900px"/>
 
 7. Request a study using C-MOVE:
    ```objectscript
@@ -138,7 +138,7 @@ Open the DICOM production interface in your browser:
 
 **Description**: An imaging device sends a C-FIND request to IRIS to retrieve scheduled studies. IRIS queries an external MySQL database, builds the WorkList response, and sends it back.
 
-<img src="img/wl-usecase.png" width="500px"/>
+<img src="img/wl-usecase.png" width="900px"/>
 
 ### 🛢️ Check the external MySQL WorkList DB
 
