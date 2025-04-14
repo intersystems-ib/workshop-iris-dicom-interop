@@ -1,5 +1,7 @@
+Include EnsDICOM
+
 /// Example of REST service that receives DICOM files as MIME attachments
-Class DICOM.BS.RESTMimeService Extends (Ens.BusinessService, %CSP.REST)
+Class DICOM.BS.RESTService Extends (Ens.BusinessService, %CSP.REST)
 {
 
 XData UrlMap
@@ -28,11 +30,14 @@ ClassMethod NewStudy() As %Status
                 set sc = ##class(EnsLib.DICOM.Document).CreateFromDicomFileStream(mimeData, .dicom)
                 $$$ThrowOnError(sc)
 
-                // print some dicom content
+                // set as C-STORE request
+                do dicom.SetValueAt($$$Str2MsgTyp("C-STORE-RQ"),"CommandSet.CommandField")
+
+                // preturn some dicom content
                 write { "DataSet.PatientName": (dicom.GetValueAt("DataSet.PatientName")) }.%ToJSON(),!
 
                 // here you can instatiate Business Service and send messages to other interop components
-                $$$ThrowOnError(##class(Ens.Director).CreateBusinessService("REST Mime Service",.service))
+                $$$ThrowOnError(##class(Ens.Director).CreateBusinessService("DICOM REST Service", .service))
                 $$$ThrowOnError(service.OnProcessInput(dicom))
             }
 
@@ -51,7 +56,7 @@ Method OnProcessInput(pInput As %RegisteredObject, Output pOutput As %Registered
 {
 	set ret = $$$OK
     try {
-        $$$ThrowOnError(..SendRequestAsync("Dummy Process", pInput))
+        $$$ThrowOnError(..SendRequestAsync("DICOM Store Process", pInput))
 
     } catch ex {
         set ret = ex.AsStatus()

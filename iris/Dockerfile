@@ -8,6 +8,7 @@ RUN chmod +x /irissession.sh
 
 # copy files
 COPY --chown=$ISC_PACKAGE_MGRUSER:$ISC_PACKAGE_IRISGROUP src /tmp/src
+COPY --chown=$ISC_PACKAGE_MGRUSER:$ISC_PACKAGE_IRISGROUP install /tmp/install
 
 SHELL ["/irissession.sh"]
 
@@ -21,6 +22,8 @@ RUN \
   set production = "DICOM.Production" \
   set ^Ens.Configuration("csp","LastProduction") = production \
   do ##class(Ens.Director).SetAutoStart(production) \
+  zn "%SYS" \
+  do ##class(Security.Applications).Import("/tmp/install/webapps.xml") \
   set sc = 1
 
 # bringing the standard shell back

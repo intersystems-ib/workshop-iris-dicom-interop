@@ -113,6 +113,8 @@ XData ProductionDefinition
     <Setting Target="Host" Name="ParamSQLTypes"></Setting>
     <Setting Target="Host" Name="ResponseClass"></Setting>
   </Item>
+  <Item Name="DICOM REST Service" Category="" ClassName="DICOM.BS.RESTService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
 </Production>
 }
 
