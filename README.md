@@ -1,10 +1,6 @@
 # 🧪 Simple DICOM Integration with InterSystems IRIS for Health + dcm4che Simulator
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)  
-[![Docker Ready](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)  
-[![VS Code Compatible](https://img.shields.io/badge/VS%20Code-Compatible-blueviolet)](https://code.visualstudio.com/)  
-[![Maintained](https://img.shields.io/badge/status-maintained-brightgreen)](#)  
-[![InterSystems IRIS](https://img.shields.io/badge/Powered%20by-InterSystems%20IRIS-ff69b4)](https://www.intersystems.com/iris)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![Docker Ready](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/) [![VS Code Compatible](https://img.shields.io/badge/VS%20Code-Compatible-blueviolet)](https://code.visualstudio.com/) [![Maintained](https://img.shields.io/badge/status-maintained-brightgreen)](#) [![InterSystems IRIS](https://img.shields.io/badge/Powered%20by-InterSystems%20IRIS-ff69b4)](https://www.intersystems.com/iris)
 
 This repository provides hands-on examples of DICOM integration using **InterSystems IRIS for Health** and the **dcm4che DICOM simulator**.
 
@@ -168,6 +164,31 @@ Open the DICOM production interface in your browser:
 ### 🧠 See how IRIS handled it
 
 👉 Check [DICOM WL Find In Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20WL%20Find%20In)
+
+
+---
+
+Here’s how your **Use Case 4: Store Document over the Web** would look integrated into the existing [README.md](https://github.com/intersystems-ib/workshop-iris-dicom-interop/blob/master/README.md) in the same style and structure:
+
+---
+
+## 🌐 Use Case 4: Store Document over the Web
+
+**Description**: An imaging device sends an image over HTTP using a STOW-RS (HTTP POST) request to IRIS, which receives, extracts, and processes the DICOM image.
+
+<img src="img/stowrs-usecase.png" width="900px"/>
+
+1. Open the tools container:
+   ```bash
+   docker exec -it tools bash
+   ```
+
+2. Send a DICOM image using STOW-RS:
+   ```bash
+   ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm
+   ```
+
+3. In IRIS, check the received message in the [DICOM REST Service Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20REST%20Service)
 
 ---
 
