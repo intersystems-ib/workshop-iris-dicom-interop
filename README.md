@@ -168,10 +168,6 @@ Open the DICOM production interface in your browser:
 
 ---
 
-Here’s how your **Use Case 4: Store Document over the Web** would look integrated into the existing [README.md](https://github.com/intersystems-ib/workshop-iris-dicom-interop/blob/master/README.md) in the same style and structure:
-
----
-
 ## 🌐 Use Case 4: Store Document over the Web
 
 **Description**: An imaging device sends an image over HTTP using a STOW-RS (HTTP POST) request to IRIS, which receives, extracts, and processes the DICOM image.
