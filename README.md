@@ -181,7 +181,7 @@ Open the DICOM production interface in your browser:
 
 2. Send a DICOM image using STOW-RS:
    ```bash
-   ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm
+   ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm /shared/dicom/d1I00002.dcm
    ```
 
 3. In IRIS, check the received message in the [DICOM REST Service Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20REST%20Service)

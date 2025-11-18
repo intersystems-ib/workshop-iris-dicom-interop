@@ -16,6 +16,9 @@ ClassMethod NewStudy() As %Status
     set ret = $$$OK
 
     try {
+        // instatiate Business Service
+        $$$ThrowOnError(##class(Ens.Director).CreateBusinessService("DICOM REST Service", .service))
+        
         // for each mime data
         set mimeName = %request.NextMimeData("")
         while (mimeName'="") {
@@ -24,7 +27,7 @@ ClassMethod NewStudy() As %Status
 
             // get some attributes
             set contentType = mimeData.Attributes("ContentType")
-            
+
             // do something with data
             if (contentType = "application/dicom") {
                 set sc = ##class(EnsLib.DICOM.Document).CreateFromDicomFileStream(mimeData, .dicom)
@@ -36,8 +39,7 @@ ClassMethod NewStudy() As %Status
                 // preturn some dicom content
                 write { "DataSet.PatientName": (dicom.GetValueAt("DataSet.PatientName")) }.%ToJSON(),!
 
-                // here you can instatiate Business Service and send messages to other interop components
-                $$$ThrowOnError(##class(Ens.Director).CreateBusinessService("DICOM REST Service", .service))
+                // send messages to other interop components
                 $$$ThrowOnError(service.OnProcessInput(dicom))
             }
 
