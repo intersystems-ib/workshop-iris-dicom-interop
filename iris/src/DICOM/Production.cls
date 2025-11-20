@@ -8,6 +8,7 @@ Parameter SETTINGS = "ShutdownTimeout,UpdateTimeout,StorageLocation";
 Property StorageLocation As %String;
 
 /// Create DICOM associations when starting production
+/// As we are using DCM4CHE as DICOM simulator, keep the AssociationContexts as simple as possible because otherwise DCM4CHE could return errors
 ClassMethod OnStart(pTimeStarted As %String) As %Status
 {
   if '##class(EnsLib.DICOM.Util.AssociationContext).AETExists("DCM_PDF_SCP","IRIS_PDF_SCU") {
@@ -28,6 +29,10 @@ ClassMethod OnStart(pTimeStarted As %String) As %Status
 
   if '##class(EnsLib.DICOM.Util.AssociationContext).AETExists("DCM_WL","IRIS_WL") {
 		do ##class(DICOM.Util).CreateAssociation("DCM_WL","IRIS_WL",$ListBuild($$$IMPLICITVRLETRANSFERSYNTAX), $lb("FIND"))
+	}
+
+  if '##class(EnsLib.DICOM.Util.AssociationContext).AETExists("IRIS_STOWRS_SCU","DCM_STORE_SCP") {
+		do ##class(DICOM.Util).CreateAssociation("IRIS_STOWRS_SCU","DCM_STORE_SCP",$ListBuild($$$IMPLICITVRLETRANSFERSYNTAX), $lb("Secondary Capture Image Storage"))
 	}
 	
   quit $$$OK
@@ -113,7 +118,20 @@ XData ProductionDefinition
     <Setting Target="Host" Name="ParamSQLTypes"></Setting>
     <Setting Target="Host" Name="ResponseClass"></Setting>
   </Item>
-  <Item Name="DICOM REST Service" Category="" ClassName="DICOM.BS.RESTService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  <Item Name="DICOM REST Service" Category="STOW-RS" ClassName="DICOM.BS.RESTService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="DICOM StowRs Handler" Category="STOW-RS" ClassName="DICOM.BP.StowRsHandlerProcess" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="OperationDuplexName">DICOM Store DCM TCP Out</Setting>
+  </Item>
+  <Item Name="DICOM Store DCM TCP Out" Category="STOW-RS" ClassName="EnsLib.DICOM.Operation.TCP" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="InactivityTimeout">0</Setting>
+    <Setting Target="Host" Name="DuplexTargetConfigName">DICOM STOWRS Process</Setting>
+    <Setting Target="Adapter" Name="LocalAET">IRIS_STOWRS_SCU</Setting>
+    <Setting Target="Adapter" Name="RemoteAET">DCM_STORE_SCP</Setting>
+    <Setting Target="Adapter" Name="TraceVerbosity">2</Setting>
+    <Setting Target="Adapter" Name="JobPerConnection">0</Setting>
+    <Setting Target="Adapter" Name="IPPort">4010</Setting>
+    <Setting Target="Adapter" Name="IPAddress">tools</Setting>
   </Item>
 </Production>
 }

@@ -178,10 +178,14 @@ Open the DICOM production interface in your browser:
    ```bash
    docker exec -it tools bash
    ```
-
-2. Send a DICOM image using STOW-RS:
+2. Run a simulated listener for incoming C-STORE:
    ```bash
-   ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm /shared/dicom/d1I00002.dcm
+   ./storescp -b DCM_STORE_SCP:4010 --response-delay 5000
+   ```
+
+2. Send DICOM images using STOW-RS:
+   ```bash
+   ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm /shared/dicom/d1I00002.dcm /shared/dicom/d1I00003.dcm
    ```
 
 3. In IRIS, check the received message in the [DICOM REST Service Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20REST%20Service)
