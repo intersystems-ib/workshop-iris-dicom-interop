@@ -106,8 +106,7 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
 	Quit tSC
 }
 
-// Process the next DICOM document in the StowRsReq message
-
+/// Process the next DICOM document in the StowRsReq message
 Method ProcessNextDocument() As %Status
 {
 	set ret = $$$OK
