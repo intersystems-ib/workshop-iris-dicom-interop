@@ -1,11 +1,12 @@
 {
     "objectscript.export.folder": "iris/src",
     "objectscript.conn": {
-        "active": true,
+        "active": false,
         "username": "superuser",
         "password": "SYS",
         "ns": "USER",
         "port": 52773,
         "host": "localhost"
     },
+    "workbench.colorTheme": "InterSystems Default Dark Modern",
 }

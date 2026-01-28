@@ -198,6 +198,12 @@ You now have a fully working, simulated DICOM integration lab using IRIS for Hea
 
 ---
 
+## 🔐 Securing DICOM with TLS
+
+Want to add mutual TLS (mTLS) authentication to your DICOM communications? Check out the [TLS Setup Guide](TLS.md) for step-by-step instructions on creating certificates and configuring secure connections between SCU clients and IRIS.
+
+---
+
 ## 📚 Learn More
 
 - [🧠 InterSystems Learning Portal](https://learning.intersystems.com)
