@@ -219,6 +219,9 @@ Add this before the command to see detailed TLS handshake logs:
 JAVA_TOOL_OPTIONS="-Djavax.net.debug=ssl,handshake" ./storescu ...
 ```
 
+Additionally, you can also enable `^REDEBUG` in InterSystems IRIS.
+See: [do ^REDEBUG for debugging SSL/TLS configurations](https://community.intersystems.com/post/do-redebug-debugging-ssltls-configurations?searchquery=ssl%20debug)
+
 ---
 
 ## 📋 Quick Reference
