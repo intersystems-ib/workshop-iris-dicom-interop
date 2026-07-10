@@ -92,7 +92,7 @@ XData ProductionDefinition
   <Item Name="DICOM Store Process" Category="QueryRetrieve" ClassName="DICOM.BP.StoreProcess" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
   </Item>
   <Item Name="JavaGateway" Category="" ClassName="EnsLib.JavaGateway.Service" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
-    <Setting Target="Host" Name="ClassPath">/shared/install/mysql-connector-j-8.4.0.jar</Setting>
+    <Setting Target="Host" Name="%gatewayName">%Java Server</Setting>
   </Item>
   <Item Name="DICOM WL Find In" Category="WorkList" ClassName="EnsLib.DICOM.Service.TCP" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
     <Setting Target="Host" Name="InactivityTimeout">0</Setting>
@@ -110,6 +110,7 @@ XData ProductionDefinition
   <Item Name="HIS WorkList Query" Category="WorkList" ClassName="EnsLib.SQL.Operation.GenericOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Adapter" Name="Credentials">MySQL_User</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/testdb</Setting>
+    <Setting Target="Adapter" Name="JDBCClasspath">/shared/install/mysql-connector-j-8.4.0.jar</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
     <Setting Target="Host" Name="RequestClass">DICOM.Msg.WorkListReq</Setting>
