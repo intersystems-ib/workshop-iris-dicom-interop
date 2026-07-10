@@ -1,4 +1,4 @@
-ARG IMAGE=containers.intersystems.com/intersystems/irishealth-community:2025.1
+ARG IMAGE=containers.intersystems.com/intersystems/irishealth-community:2026.1
 FROM $IMAGE
 
 USER ${ISC_PACKAGE_MGRUSER}
