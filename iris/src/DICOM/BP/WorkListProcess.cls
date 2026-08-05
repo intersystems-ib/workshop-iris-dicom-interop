@@ -48,16 +48,18 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
 				set workListReq.ScheduledDate = $zdateh(pInput.GetValueAt("DataSet.ScheduledProcedureStepSequence[1].ScheduledProcedureStepStartDate"),5)
 				$$$ThrowOnError(..SendRequestSync("HIS WorkList Query", workListReq, .streamRsp))
 
-				// process response
-				set workListRsp = {}.%FromJSON(streamRsp.Stream)
-				set workListIter = workListRsp.%GetIterator()
+				// Process matching rows when the SQL operation returned a stream. No rows is a valid C-FIND result.
+				If ($IsObject(streamRsp) && $IsObject(streamRsp.Stream)) {
+					set workListRsp = {}.%FromJSON(streamRsp.Stream)
+					set workListIter = workListRsp.%GetIterator()
 
-				while workListIter.%GetNext(.wlIdx, .wlRecord) {
-					// more to send, create and send an intermediate response
-					$$$ThrowOnError(..CreateIntermediateFindResponse(..DocumentFromService, wlRecord, .tReply))
-					
-					// send the reply back to the service ( don't want a response )
-					$$$ThrowOnError(..SendRequestAsync(..ServiceDuplexName, tReply, 0))
+					while workListIter.%GetNext(.wlIdx, .wlRecord) {
+						// more to send, create and send an intermediate response
+						$$$ThrowOnError(..CreateIntermediateFindResponse(..DocumentFromService, wlRecord, .tReply))
+
+						// send the reply back to the service ( don't want a response )
+						$$$ThrowOnError(..SendRequestAsync(..ServiceDuplexName, tReply, 0))
+					}
 				}
 
 				// no more to send, create and send a final respnse

@@ -9,6 +9,9 @@ CREATE TABLE WorkList (
 
 INSERT INTO WorkList (PatientID, PatientName, Modality, ScheduledDate, ScheduledTime) 
 VALUES
+('DEMO001', 'Alice Demo', 'CT', '2025-04-04', '08:00:00'),
+('DEMO002', 'Bob Demo', 'MR', '2025-04-04', '08:30:00'),
+('DEMO003', 'Carol Demo', 'US', '2025-04-04', '09:00:00'),
 ('P001', 'John Smith', 'CT', CURDATE(), '08:00:00'),
 ('P002', 'Emily Johnson', 'MR', CURDATE(), '08:30:00'),
 ('P003', 'Michael Brown', 'US', CURDATE(), '09:00:00'),
