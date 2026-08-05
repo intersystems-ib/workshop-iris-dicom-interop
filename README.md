@@ -158,8 +158,10 @@ Open the DICOM production interface in your browser:
 
 2. Send a WorkList query:
    ```bash
-   ./findscu -b DCM_WL -c IRIS_WL@iris:1112 -m StudyDate=20250404
+   ./findscu -b DCM_WL -c IRIS_WL@iris:1112 -M MWL -m ScheduledProcedureStepSequence.ScheduledProcedureStepStartDate=20250404
    ```
+
+   This sends a real Modality Worklist C-FIND request using SOP class `1.2.840.10008.5.1.4.31`.
 
 ### 🧠 See how IRIS handled it
 

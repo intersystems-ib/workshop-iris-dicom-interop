@@ -43,9 +43,9 @@ Method OnMessage(pSourceConfigName As %String, pInput As %Library.Persistent) As
 				Set ..StudyInstanceCounter=0
 		
 				// invoke worklist query from external db / service
-				$$$TRACE("Received C-FIND with StudyDate="_pInput.GetValueAt("DataSet.StudyDate")) 
+				$$$TRACE("Received C-FIND with ScheduledProcedureStepStartDate="_pInput.GetValueAt("DataSet.ScheduledProcedureStepSequence[1].ScheduledProcedureStepStartDate"))
 				set workListReq = ##class(DICOM.Msg.WorkListReq).%New()
-				set workListReq.ScheduledDate = $zdateh(pInput.GetValueAt("DataSet.StudyDate"),5)
+				set workListReq.ScheduledDate = $zdateh(pInput.GetValueAt("DataSet.ScheduledProcedureStepSequence[1].ScheduledProcedureStepStartDate"),5)
 				$$$ThrowOnError(..SendRequestSync("HIS WorkList Query", workListReq, .streamRsp))
 
 				// process response
