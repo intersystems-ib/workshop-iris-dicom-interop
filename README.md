@@ -1,6 +1,17 @@
-# 🧪 Simple DICOM Integration with InterSystems IRIS for Health + dcm4che Simulator
+<h1 align="center">
+  <img src="img/logo.png" alt="DICOM and IRIS interoperability logo" width="64" valign="middle" />
+  DICOM Integration with InterSystems IRIS for Health
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![Docker Ready](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/) [![VS Code Compatible](https://img.shields.io/badge/VS%20Code-Compatible-blueviolet)](https://code.visualstudio.com/) [![Maintained](https://img.shields.io/badge/status-maintained-brightgreen)](#) [![InterSystems IRIS](https://img.shields.io/badge/Powered%20by-InterSystems%20IRIS-ff69b4)](https://www.intersystems.com/iris)
+<p align="center">dcm4che simulator · DICOM interoperability workshop</p>
+
+<p align="center">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
+  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-ready-blue" alt="Docker Ready" /></a>
+  <a href="https://code.visualstudio.com/"><img src="https://img.shields.io/badge/VS%20Code-Compatible-blueviolet" alt="VS Code Compatible" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/status-maintained-brightgreen" alt="Maintained" /></a>
+  <a href="https://www.intersystems.com/iris"><img src="https://img.shields.io/badge/Powered%20by-InterSystems%20IRIS-ff69b4" alt="Powered by InterSystems IRIS" /></a>
+</p>
 
 This repository provides hands-on examples of DICOM integration using **InterSystems IRIS for Health** and the **dcm4che DICOM simulator**.
 
@@ -11,6 +22,17 @@ You'll find:
 
 Perfect for testing, learning, or building healthcare imaging integrations.
 
+## What you'll learn
+
+| Use case | DICOM interaction | Integration outcome |
+| --- | --- | --- |
+| Embedded PDF | C-STORE | IRIS receives a DICOM document and extracts its metadata. |
+| Query / Retrieve | C-FIND and C-MOVE | IRIS locates a study in a simulated archive and retrieves it. |
+| WorkList | Modality Worklist C-FIND | IRIS queries MySQL and returns scheduled procedure steps. |
+| Store over the Web | STOW-RS | IRIS accepts DICOM over HTTP and forwards it to a DICOM receiver. |
+
+> **DICOM vocabulary:** An **AE Title** is a DICOM application's name. An **SCU** sends a request and an **SCP** receives it. **C-FIND** searches for matching records, **C-MOVE** requests a transfer, **Modality Worklist** supplies scheduled imaging work, and **STOW-RS** stores DICOM objects over HTTP.
+
 ---
 
 ## 🧰 Requirements
@@ -18,37 +40,45 @@ Perfect for testing, learning, or building healthcare imaging integrations.
 To run this project, you’ll need:
 
 - [Git](https://git-scm.com/downloads)  
-- [Docker](https://www.docker.com/products/docker-desktop) + [Docker Compose](https://docs.docker.com/compose/install/)  
+- [Docker Desktop](https://www.docker.com/products/docker-desktop), including Docker Compose
   ⚠️ On **Windows**, make sure Docker is using **Linux containers**  
+
+Optional, for browsing and editing the ObjectScript source:
+
 - [Visual Studio Code](https://code.visualstudio.com/download) with [InterSystems ObjectScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=intersystems-community.objectscript-pack)
 
 ---
 
 ## 🚀 Getting Started
 
-Once you’ve got Docker installed, you can get up and running with:
+Once you’ve got Docker installed, build and start the lab with:
 
 ```bash
-docker-compose build
-docker-compose up -d
+docker compose up -d --build
 ```
 
-That's it — you're ready to dive in!
+Confirm that the three services are running before starting a use case:
+
+```bash
+docker compose ps
+```
+
+You should see `iris`, `tools`, and `mysql` running. That's it — you're ready.
 
 ---
 
-## 🧭 Explore the IRIS Production
+## Explore the IRIS Production
 
 Open the DICOM production interface in your browser:
 
-👉 [DICOM.Production](http://localhost:52773/csp/user/EnsPortal.ProductionConfig.zen?PRODUCTION=DICOM.Production&$NAMESPACE=USER)  
-🔐 Credentials: `superuser` / `SYS`
+[DICOM.Production](http://localhost:52773/csp/user/EnsPortal.ProductionConfig.zen?PRODUCTION=DICOM.Production&$NAMESPACE=USER)
+Credentials: `superuser` / `SYS`
 
 ---
 
 ## 📥 Use Case 1: Receiving DICOM with Embedded PDF
 
-**Description**: A DICOM file containing a PDF report is received by IRIS. The system extracts metadata from the DICOM header (e.g. patient name, study ID) and stores both the PDF and metadata in another system (like an EHR or document store).
+A DICOM file containing a PDF report is received by IRIS. The system extracts metadata from the DICOM header (e.g. patient name, study ID) and stores both the PDF and metadata in another system (like an EHR or document store).
 
 <img src="img/pdfembedded-usecase.png" width="900px"/>
 
@@ -69,14 +99,16 @@ Open the DICOM production interface in your browser:
    ./storescu -b DCM_PDF_SCP -c IRIS_PDF_SCU@iris:2010 /shared/pdf/embeddedpdf.dcm
    ```
 
-4. 📨 Check the messages in IRIS:  
-   👉 [Message Viewer](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen)
+4. Check the messages in IRIS:
+   [Message Viewer](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen)
+
+**Expected outcome:** A new inbound DICOM message appears in the IRIS Message Viewer.
 
 ---
 
 ## 🔍 Use Case 2: Query / Retrieve (C-FIND / C-MOVE)
 
-**Description**: IRIS queries a PACS using a DICOM C-FIND to locate imaging studies, then uses C-MOVE to retrieve one of the matching documents.
+IRIS queries a PACS using a DICOM C-FIND to locate imaging studies, then uses C-MOVE to retrieve one of the matching documents.
 
 ### Querying with C-FIND
 
@@ -102,7 +134,9 @@ Open the DICOM production interface in your browser:
    ./dcmqrscp --ae-config /shared/ae.properties -b DCM_QRY_SCP:3010 --dicomdir /shared/DICOMDIR
    ```
 
-5. Connect to IRIS:
+   > This command keeps the terminal busy. Leave it running, then open a second terminal for the next steps.
+
+5. In a second terminal, connect to IRIS:
    ```bash
    docker exec -it iris bash
    iris session iris
@@ -113,7 +147,9 @@ Open the DICOM production interface in your browser:
    do ##class(DICOM.BS.QueryService).TestFind()
    ```
 
-   👉 View results in [QueryService Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=QueryService)
+   View results in [QueryService Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=QueryService)
+
+   **Expected outcome:** IRIS sends a C-FIND request and records matching study information in the Message Viewer.
 
 ### Retrieving with C-MOVE
 
@@ -124,9 +160,10 @@ Open the DICOM production interface in your browser:
    do ##class(DICOM.BS.MoveService).TestMove()
    ```
 
-   👉 Track the transfer:  
-   [MoveService](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=MoveService) |  
-   [DICOM Store In](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20Store%20In)
+   Track the transfer:
+   [MoveService](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=MoveService) | [DICOM Store In](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20Store%20In)
+
+   **Expected outcome:** The selected study is transferred from the simulated archive to IRIS as DICOM C-STORE messages.
 
 ---
 
@@ -136,7 +173,7 @@ Open the DICOM production interface in your browser:
 
 <img src="img/wl-usecase.png" width="900px"/>
 
-### 🛢️ Check the external MySQL WorkList DB
+### Check the external MySQL WorkList DB
 
 1. Enter the MySQL container:
    ```bash
@@ -149,7 +186,7 @@ Open the DICOM production interface in your browser:
    SELECT * FROM WorkList;
    ```
 
-### 📡 Request the WorkList using C-FIND
+### Request the WorkList using C-FIND
 
 1. Open the tools container:
    ```bash
@@ -163,16 +200,18 @@ Open the DICOM production interface in your browser:
 
    This sends a real Modality Worklist C-FIND request using SOP class `1.2.840.10008.5.1.4.31`.
 
-### 🧠 See how IRIS handled it
+   **Expected outcome:** The fixed demo date returns three scheduled entries: `DEMO001`, `DEMO002`, and `DEMO003`.
 
-👉 Check [DICOM WL Find In Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20WL%20Find%20In)
+### See how IRIS handled it
+
+Check [DICOM WL Find In Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20WL%20Find%20In)
 
 
 ---
 
 ## 🌐 Use Case 4: Store Document over the Web
 
-**Description**: An imaging device sends an image over HTTP using a STOW-RS (HTTP POST) request to IRIS, which receives, extracts, and processes the DICOM image.
+An imaging device sends an image over HTTP using a STOW-RS (HTTP POST) request to IRIS, which receives, extracts, and processes the DICOM image.
 
 <img src="img/stowrs-usecase.png" width="900px"/>
 
@@ -185,29 +224,41 @@ Open the DICOM production interface in your browser:
    ./storescp -b DCM_STORE_SCP:4010 --response-delay 5000
    ```
 
-2. Send DICOM images using STOW-RS:
+   This command keeps the terminal busy. Leave it running, then open a second terminal for the STOW-RS request.
+
+3. In a second terminal, send DICOM images using STOW-RS:
    ```bash
    ./stowrs --url http://iris:52773/dicom/studies /shared/dicom/d1I00001.dcm /shared/dicom/d1I00002.dcm /shared/dicom/d1I00003.dcm
    ```
 
-3. In IRIS, check the received message in the [DICOM REST Service Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20REST%20Service)
+4. In IRIS, check the received message in the [DICOM REST Service Messages](http://localhost:52773/csp/user/EnsPortal.MessageViewer.zen?SOURCEORTARGET=DICOM%20REST%20Service)
+
+**Expected outcome:** IRIS receives the STOW-RS request, and the simulated listener receives the forwarded DICOM C-STORE messages.
 
 ---
 
-## 🎉 You're All Set!
+## You're All Set!
 
-You now have a fully working, simulated DICOM integration lab using IRIS for Health and dcm4che. Use it to learn, test, build prototypes — and have fun doing it!
+You now have a fully working, simulated DICOM integration lab using IRIS for Health and dcm4che. Use it to learn, test and build prototypes.
+
+### Stop the lab (optional)
+
+```bash
+docker compose down
+```
 
 ---
 
-## 🔐 Securing DICOM with TLS
+## Securing DICOM with TLS
 
-Want to add mutual TLS (mTLS) authentication to your DICOM communications? Check out the [TLS Setup Guide](TLS.md) for step-by-step instructions on creating certificates and configuring secure connections between SCU clients and IRIS.
+Want to add mutual TLS (mTLS) authentication to your DICOM communications?
+
+Check out the [TLS Setup Guide](TLS.md) for step-by-step instructions on creating certificates and configuring secure connections between SCU clients and IRIS.
 
 ---
 
-## 📚 Learn More
+## Learn More
 
-- [🧠 InterSystems Learning Portal](https://learning.intersystems.com)
+- [InterSystems Learning Portal](https://learning.intersystems.com)
 - [📦 dcm4che DICOM Tools](https://github.com/dcm4che/dcm4che)
 - [💡 IRIS for Health](https://www.intersystems.com/iris-for-health/)
